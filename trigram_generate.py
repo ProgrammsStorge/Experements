@@ -1,5 +1,8 @@
+import random
+
+
 def search(query: str, data: str,text) -> list[tuple[str, int]]:
-    gram_count=6
+    gram_count=5
     if not query or len(query) < gram_count:
         q_trigrams = {query} if query else set()
     else:
@@ -54,9 +57,11 @@ def extract_keywords(text, top_n=5):
     return unique_words[:top_n]
 
 def generate(text_user):
-    text = text_user.lower() + " <|end|>\n<|sementrepp|>"
+    temperature = 0
+    text = text_user.lower() + ' бот:'
     good_words = extract_keywords(text)
-    for i in range(10):
+    dominate_data_block=0
+    for i in range(15):
         scan_words = []
         for data in database:
             try:
@@ -65,38 +70,50 @@ def generate(text_user):
             except Exception as e:
                 continue
         word_win = ["", 0]
+        last_winers=["","",""]
+        scan_words=words
         for word in scan_words:
             for data in database:
                 try:
                     data = " ".join(data.split()[:data.split().index(word)])
                     res = list(search(text, data,text))
                     res[0] = list(res[0])
+                    res[0][1]+=random.randint(-temperature,temperature)
                     if word in good_words:
-                        res[0][1] += 8
+                        res[0][1] *= 1
+                    if data == dominate_data_block:
+                        res[0][1]/=1
+                    dominate_data_block=data
                     if word_win[1] < res[0][1]:
                         word_win = [word, res[0][1]]
+                        last_winers.insert(0,word_win[0])
+                        last_winers.pop()
                 except ValueError as e:
                     continue
 
         text += f" {word_win[0]}"
         # print(text)
-        if word_win[0] == "<|end|>": return text
-        print(word_win[0], end=" ")
+        if "пользователь:" in word_win[0]: return text
+        print(word_win[0], end=" ")# + str(last_winers)
     print()
     return text
 
 
 
+
 if __name__ == "__main__":
-    with open("dialogs_filtered.txt", "r",encoding="utf-8") as f:
-        readed=f.read().replace("<"," <").replace(">","> ")
-        database =list(set(readed.lower().splitlines()))
-        words = sorted(list(set(readed.lower().split()))+[])
+    with open("input.txt", "r",encoding="utf-8") as f:
+        readed=f.read().replace("<"," <").replace(">","> ").replace('"',"").replace(":",": ")[0:].lower()
+
+        #database = list(set(['\n'.join(readed.split("\n")[i:i + 2]) for i in range(0, len(readed.split("\n")), 2)]))
+        database =list(set(readed.lower().split("\n---\n")))
+
+        database += ["\n".join(i.split("\n")[::-1])for i in database]
+        words = sorted(list(set(readed.lower().split()))+["\n"])
     print(database)
     print(words)
 
     while True:
         text = ""
         text += generate(text+input("\n>> "))
-
 
