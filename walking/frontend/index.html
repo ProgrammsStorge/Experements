@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CCM Biped</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>CCM&nbsp;Biped</h1>
+    <span class="sub">cart-pole &middot; 5 CCM-моделей</span>
+    <div class="status" id="status">offline</div>
+  </header>
+
+  <main>
+    <section class="stage-wrap">
+      <canvas id="stage"></canvas>
+      <div class="hud">
+        <div><b id="hudEp">0</b><span>эпизод</span></div>
+        <div><b id="hudRew">0</b><span>reward</span></div>
+        <div><b id="hudBest">—</b><span>best</span></div>
+        <div><b id="hudStep">0</b><span>шаг</span></div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <h2>Режим</h2>
+        <div class="row">
+          <button id="mStand" class="primary">🧍 Stand</button>
+          <button id="mGoTo">🚶 Go to X</button>
+          <button id="mRandom">🎲 Random</button>
+        </div>
+        <label class="slider">
+          <span>Цель X (м)</span>
+          <input type="range" id="targetX" min="-5" max="5" step="0.1" value="2">
+          <em id="targetXVal">2.0</em>
+        </label>
+        <div class="row"><button id="btnApplyTarget">Применить</button></div>
+      </div>
+
+      <div class="card">
+        <h2>Управление</h2>
+        <div class="row">
+          <button id="btnStart" class="primary">▶ Старт</button>
+          <button id="btnPause">⏸ Пауза</button>
+        </div>
+        <div class="row">
+          <button id="btnReset">↺ Сброс</button>
+          <button id="btnResetBrain" class="danger">✖ Мозги</button>
+        </div>
+        <div class="row">
+          <button id="btnWatchBest">👁 Best</button>
+          <button id="btnLoadBest">📥 Best→cur</button>
+        </div>
+        <div class="row">
+          <button id="btnSave">💾 Save</button>
+          <button id="btnLoad">📂 Load</button>
+        </div>
+        <label class="slider">
+          <span>Скорость</span>
+          <input type="range" id="speed" min="1" max="20" value="1">
+          <em id="speedVal">1×</em>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Модели</h2>
+        <div id="models" class="models"></div>
+      </div>
+
+      <div class="card">
+        <h2>Окружение <button id="btnResetEnv" class="mini danger">reset</button></h2>
+        <div id="env" class="env"></div>
+      </div>
+
+      <div class="card">
+        <h2>Прогресс</h2>
+        <canvas id="chart"></canvas>
+      </div>
+    </aside>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

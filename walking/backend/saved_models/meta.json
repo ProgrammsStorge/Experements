@@ -1,0 +1,15 @@
+{
+  "episode": 582,
+  "best_reward": 10717.398707673376,
+  "best_episode": 501,
+  "saved_at": 1792482186.5435236,
+  "n_agents": 1,
+  "models": {
+    "torso": 413,
+    "left_leg": 480,
+    "right_leg": 480,
+    "left_arm": 384,
+    "right_arm": 372
+  },
+  "has_best_snapshot": true
+}
